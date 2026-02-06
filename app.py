@@ -81,4 +81,14 @@ if uploaded_file:
                     )
                     refined_output = completion.choices[0].message.content
 
-                st
+                st.success("🎯 تم استخراج أهم نقاط المحاضرة!")
+                
+                # عرض النتائج
+                tab1, tab2 = st.tabs(["📝 أهم النقاط (الزتونة)", "📄 التفريغ الكامل"])
+                with tab1:
+                    st.info(refined_output)
+                with tab2:
+                    st.write(raw_text)
+
+            except Exception as e:
+                st.error(f"حدث خطأ في التحليل: {e}")
