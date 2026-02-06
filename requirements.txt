@@ -1,5 +1,5 @@
-streamlit
 groq
+pydub
 fpdf2
 arabic-reshaper
 python-bidi
