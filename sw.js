@@ -1,4 +1,4 @@
-const CACHE_NAME = 'study-organizer-v1';
+const CACHE_NAME = 'be-regular-v1';
 const urlsToCache = [
     './',
     './index.html',
@@ -9,11 +9,11 @@ const urlsToCache = [
 
 // Install event - cache all files
 self.addEventListener('install', event => {
-    console.log('Service Worker: Installing...');
+    console.log('Be Regular Service Worker: Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Service Worker: Caching files');
+                console.log('Be Regular Service Worker: Caching files');
                 return cache.addAll(urlsToCache);
             })
             .then(() => self.skipWaiting())
@@ -22,13 +22,13 @@ self.addEventListener('install', event => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
-    console.log('Service Worker: Activating...');
+    console.log('Be Regular Service Worker: Activating...');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('Service Worker: Deleting old cache:', cacheName);
+                        console.log('Be Regular Service Worker: Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
