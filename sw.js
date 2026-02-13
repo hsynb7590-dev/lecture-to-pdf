@@ -42,18 +42,13 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Return cached version or fetch from network
                 return response || fetch(event.request)
                     .then(fetchResponse => {
-                        // Don't cache non-GET requests or blob URLs
                         if (event.request.method !== 'GET' || event.request.url.startsWith('blob:')) {
                             return fetchResponse;
                         }
                         
-                        // Clone the response
                         const responseToCache = fetchResponse.clone();
-                        
-                        // Cache the new response
                         caches.open(CACHE_NAME)
                             .then(cache => {
                                 cache.put(event.request, responseToCache);
@@ -63,7 +58,6 @@ self.addEventListener('fetch', event => {
                     });
             })
             .catch(() => {
-                // If both cache and network fail, return offline page
                 return caches.match('./index.html');
             })
     );
