@@ -7,7 +7,6 @@ const urlsToCache = [
     'https://hsynb7590-dev.github.io/Be-Regular-MNU-1/icon.png'
 ];
 
-// Install event - cache all files
 self.addEventListener('install', event => {
     console.log('Be Regular Service Worker: Installing...');
     event.waitUntil(
@@ -20,7 +19,6 @@ self.addEventListener('install', event => {
     );
 });
 
-// Activate event - clean up old caches
 self.addEventListener('activate', event => {
     console.log('Be Regular Service Worker: Activating...');
     event.waitUntil(
@@ -37,7 +35,6 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
@@ -47,18 +44,13 @@ self.addEventListener('fetch', event => {
                         if (event.request.method !== 'GET' || event.request.url.startsWith('blob:')) {
                             return fetchResponse;
                         }
-                        
                         const responseToCache = fetchResponse.clone();
-                        caches.open(CACHE_NAME)
-                            .then(cache => {
-                                cache.put(event.request, responseToCache);
-                            });
-                        
+                        caches.open(CACHE_NAME).then(cache => {
+                            cache.put(event.request, responseToCache);
+                        });
                         return fetchResponse;
                     });
             })
-            .catch(() => {
-                return caches.match('./index.html');
-            })
+            .catch(() => caches.match('./index.html'))
     );
 });
